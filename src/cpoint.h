@@ -9,12 +9,21 @@ struct CPoint
 {
   int x;
   int y;
+  public:
   CPoint(int _x=0, int _y=0): x(_x), y(_y) {};
   CPoint& operator+=(const CPoint& delta)
   {
     x+=delta.x;
     y+=delta.y;
     return *this;
+  }
+  bool operator==(const CPoint &a)
+  {
+    if(a.x==x&&a.y==y)
+    {
+    	return true;
+    }
+    return false;
   }
 };
 

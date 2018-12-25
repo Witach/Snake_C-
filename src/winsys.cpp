@@ -6,6 +6,7 @@
 #include <string>
 #include <ctype.h>
 #include <stdarg.h>
+#include<unistd.h>
 using namespace std;
 
 void CView::move(const CPoint & delta)
@@ -192,11 +193,10 @@ void CDesktop::run()
     if(c == 'q' || c == 'Q')
       break;
 
-    if(c == KEY_RESIZE || handleEvent(c))
-    {
+      handleEvent(c);
       update_screen();
       paint();
       refresh();
-    }
+      usleep(40000);
   }
 }
