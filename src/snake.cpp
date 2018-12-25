@@ -15,7 +15,10 @@ void CSnake::paint()
 		gotoyx(segments[i].y+geom.topleft.y,segments[i].x+geom.topleft.x);
 		printc('+');
 	}
-	t()?snake_move():;
+	if(t())
+	{
+		move_snake();
+	}
 }
 bool CSnake::handleEvent(int key)
 {
