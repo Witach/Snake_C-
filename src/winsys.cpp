@@ -192,11 +192,10 @@ void CDesktop::run()
 
     if(c == 'q' || c == 'Q')
       break;
-
+      //usleep(40000);
       handleEvent(c);
       update_screen();
       paint();
       refresh();
-      usleep(40000);
   }
 }

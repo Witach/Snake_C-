@@ -9,12 +9,23 @@ class CSnake:public CFramedWindow
 {
 	vector<CPoint> segments;
 	CPoint course;
+	CPoint food;
+	int statesOfTheGame;
+	int score;
 	public:
+	int timer;
 	CSnake(CRect r, char _c = ' ');
   	void paint();
 	bool handleEvent(int key);
-	void move_snake();
+	void moveSnake();
 	bool death();
+	void snakeGrow();
+	void eat();
+	void randFood();
+	void accelerate(int &a);
+	void run();
+	void printSnake();
+	void restart();
 };
 
 #endif
