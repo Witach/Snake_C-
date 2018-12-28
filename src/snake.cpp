@@ -48,23 +48,25 @@ void CSnake::printSnake()
 }
 void CSnake::paint()
 {
+	gotoyx(geom.topleft.y-1,geom.topleft.x);
+	printl("| LEVEL: %d |",score);
 	switch(statesOfTheGame)
 	{
 		case 0:
 			CFramedWindow::paint();
-			gotoyx(geom.size.y/8,geom.size.x/8);
+			gotoyx(geom.size.y/8+geom.topleft.y,geom.size.x/8+geom.topleft.x);
 			printl("h - toggle help information");
-			gotoyx(2*geom.topleft.y/8,2*geom.size.x/8);
+			gotoyx(2*geom.size.y/8+geom.topleft.y,geom.size.x/8+geom.topleft.x);
 			printl("p - toggle pause/play mode");
-			gotoyx(3*geom.size.y/8,3*geom.size.x/8);
+			gotoyx(3*geom.size.y/8+geom.topleft.y,geom.size.x/8+geom.topleft.x);
 			printl("r - toggle restatr game");
-			gotoyx(3*geom.size.y/8,3*geom.size.x/8);
+			gotoyx(3*geom.size.y/8+geom.topleft.y,geom.size.x/8+geom.topleft.x);
 			printl("wsad - move snake in play mode");			
-			gotoyx(4*geom.size.y/8,4*geom.size.x/8);
+			gotoyx(4*geom.size.y/8+geom.topleft.y,geom.size.x/8+geom.topleft.x);
 			printl("arrows - move window in pause mode");			
-			gotoyx(5*geom.size.y/8,5*geom.size.x/8);
+			gotoyx(5*geom.size.y/8+geom.topleft.y,geom.size.x/8+geom.topleft.x);
 			printl("f - toggle start game");
-			gotoyx(6*geom.size.y/8,6*geom.size.x/8);
+			gotoyx(6*geom.size.y/8+geom.topleft.y,geom.size.x/8+geom.topleft.x);
 			printl("q - toggle end game");
 			break;
 		case 1:
@@ -74,42 +76,42 @@ void CSnake::paint()
 		case 2:
 			CFramedWindow::paint();
 			printSnake();
-			gotoyx(geom.size.y/2,geom.size.y/2);
+			gotoyx(geom.size.y/2+geom.topleft.y,geom.size.x/8+geom.topleft.x);
 			printl("PAUSE");
-			gotoyx(geom.size.y/2+3,geom.size.y/2);
+			gotoyx(geom.size.y/2+3+geom.topleft.y,geom.size.x/8+geom.topleft.x);
 			printl("press p or f to contiunue your game");
 			break;
 		case 3:
 			CFramedWindow::paint();
 			printSnake();
-			gotoyx(geom.size.y/8,geom.size.x/8);
+			gotoyx(geom.size.y/8+geom.topleft.y,geom.size.x/8+geom.topleft.x);
 			printl("h - toggle help information");
-			gotoyx(2*geom.size.y/8,2*geom.size.x/8);
+			gotoyx(2*geom.size.y/8+geom.topleft.y,geom.size.x/8+geom.topleft.x);
 			printl("p - toggle pause/play mode");
-			gotoyx(3*geom.size.y/8,3*geom.size.x/8);
+			gotoyx(3*geom.size.y/8+geom.topleft.y,geom.size.x/8+geom.topleft.x);
 			printl("r - toggle restatr game");
-			gotoyx(3*geom.size.y/8,3*geom.size.x/8);
+			gotoyx(3*geom.size.y/8+geom.topleft.y,geom.size.x/8+geom.topleft.x);
 			printl("wsad - move snake in play mode");			
-			gotoyx(4*geom.size.y/8,4*geom.size.x/8);
+			gotoyx(4*geom.size.y/8+geom.topleft.y,geom.size.x/8+geom.topleft.x);
 			printl("arrows - move window in pause mode");					
-			gotoyx(5*geom.size.y/8,5*geom.size.x/8);
+			gotoyx(5*geom.size.y/8+geom.topleft.y,geom.size.x/8+geom.topleft.x);
 			printl("f - toggle start game");
-			gotoyx(7*geom.size.y/8,7*geom.size.x/8);
+			gotoyx(7*geom.size.y/8+geom.topleft.y,geom.size.x/8+geom.topleft.x);
 			printl("Press f or p to continue your game ...");
 			break;
 		case 4:
 			CFramedWindow::paint();
 			printSnake();
-			gotoyx(geom.size.y/2,geom.size.y/2);
+			gotoyx(geom.size.y/2+geom.topleft.y,geom.size.x/4+geom.topleft.x);
 			printl("GAME OVER");
-			gotoyx(geom.size.y/2+3,geom.size.y/2);
+			gotoyx(geom.size.y/2+3+geom.topleft.y,geom.size.x/4+geom.topleft.x);
 			printl("press r or f to restart  game");
 			break;
 	}
 }
 bool CSnake::handleEvent(int key)
 {
-	if(CFramedWindow::handleEvent(key))
+	if(statesOfTheGame!=1&&CFramedWindow::handleEvent(key))
 	{
 		return false;
 	}
@@ -170,6 +172,7 @@ bool CSnake::handleEvent(int key)
 					run();
 					break;
 				}
+				break;
 			case 'q':
 				statesOfTheGame=0;
 				restart();
@@ -186,11 +189,18 @@ bool CSnake::handleEvent(int key)
 					restart();
 					return true;
 				}
+				else if(statesOfTheGame==3)
+				{
+					statesOfTheGame=1;
+					run();
+				}
+				break;
 			case 'r':
 				if(statesOfTheGame!=0)
 				{
 					restart();
 				}
+				break;
 				
 				
 		};
@@ -237,6 +247,7 @@ bool CSnake::death()
 void CSnake::snakeGrow()
 {
 	segments.push_back(CPoint(segments[segments.size()-1]));
+	score++;
 }
 void CSnake::eat()
 {
